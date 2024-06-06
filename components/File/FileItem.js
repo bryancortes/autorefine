@@ -1,4 +1,3 @@
-// import moment from "moment";
 import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import moment from "moment/moment";
 import Image from "next/image";
