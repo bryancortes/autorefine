@@ -12,14 +12,35 @@ function RefineFileModal() {
         console.log(fileName);
         console.log(idTest);
         console.log(url);
-        // Usar para mandar datos hacia API
-        /*await setDoc(doc(db, "Folders", docId), {
-            name: folderName,
-            id: docId,
-            createBy: session.user.email,
-            parentFolderId: parentFolderId
-        })*/
+
+        if (!fileName) {
+          setShowToastMsg('Please select a file.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileName);
+        formData.append('original_url', url);
+        formData.append('id_pruebas', idTest);
         setShowToastMsg('Refining...');
+
+        try {
+          const response = await fetch('http://127.0.0.1:5000/ttc-api/upload', { // Asegúrate de que la URL es correcta según tu configuración
+              method: 'POST',
+              body: formData,
+          });
+  
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+  
+          const result = await response.json();
+          setShowToastMsg('Refinement complete. Check console for details.');
+          console.log(result);
+        } catch (error) {
+            console.error('Error during the fetch operation:', error);
+            setShowToastMsg('Error refining the file.');
+        }
     };
 
     const handleFileChange = (e) => {
