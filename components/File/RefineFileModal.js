@@ -25,7 +25,7 @@ function RefineFileModal() {
         setShowToastMsg('Refining...');
 
         try {
-          const response = await fetch('http://127.0.0.1:5000/ttc-api/upload', { // Asegúrate de que la URL es correcta según tu configuración
+          const response = await fetch('http://127.0.0.1:5000/ttc-api/upload', { //url api
               method: 'POST',
               body: formData,
           });
@@ -37,6 +37,9 @@ function RefineFileModal() {
           const result = await response.json();
           setShowToastMsg('Refinement complete. Check console for details.');
           console.log(result);
+          // Cerrar el modal actual y abrir el nuevo modal
+          window.refine_file.close();
+          window.download_modal.showModal();
         } catch (error) {
             console.error('Error during the fetch operation:', error);
             setShowToastMsg('Error refining the file.');
@@ -50,7 +53,7 @@ function RefineFileModal() {
     return (
         <div>
             <form method="dialog" className="modal-box p-10 items-center bg-white">
-                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => window.refine_file.close()}>
                     ✕
                 </button>
                 <div className="w-full items-center flex flex-col justify-center gap-3">
