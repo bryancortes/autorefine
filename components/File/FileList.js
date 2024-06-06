@@ -1,42 +1,7 @@
 import React, { useContext } from 'react'
 import FileItem from './FileItem'
-import { deleteDoc, doc, getFirestore } from 'firebase/firestore'
-import { app } from '../../Config/FirebaseConfig'
-import { ShowToastContext } from '../../context/ShowToastContext'
 
 function FileList({fileList}) {
-    // const fileList=[
-    //     {
-    //         id:1,
-    //         name:'UX Principal.docx',
-    //         type:'doc',
-    //         size:'6272 kB',
-    //         modifiedAt:'Nov 23,2020'
-    //     },
-    //     {
-    //         id:2,
-    //         name:'Data Structure.pdf',
-    //         type:'pdf',
-    //         size:'672 kB',
-    //         modifiedAt:'Nov 23,2022'
-    //     },
-    //     {
-    //         id:3,
-    //         name:'smaple Image.png',
-    //         type:'image',
-    //         size:'400 kB',
-    //         modifiedAt:'Nov 23,2023'
-    //     },
-    //     {
-    //         id:4,
-    //         name:'React Principal.docx',
-    //         type:'doc',
-    //         size:'6272 kB',
-    //         modifiedAt:'Nov 23,2020'
-    //     },
-        
-    // ]
-   
   return (
     <div className='bg-white mt-5 p-5
     rounded-lg'>
