@@ -14,7 +14,7 @@ function FileItem({ file }) {
     =useContext(ShowToastContext)
     const deleteFile=async(file)=>{
         await deleteDoc(doc(db,"files",file.id.toString())).then(resp=>{
-                setShowToastMsg('File Deleted!!!')
+                setShowToastMsg('Archivo borrado.')
         })
     }
     

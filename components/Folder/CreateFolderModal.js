@@ -10,7 +10,7 @@ function CreateFolderModal() {
     const [folderName,setFolderName]=useState();
     const {showToastMsg,setShowToastMsg}=useContext(ShowToastContext)
     const {data:session}=useSession();
-  const {parentFolderId,setParentFolderId}=useContext(ParentFolderIdContext)
+    const {parentFolderId,setParentFolderId}=useContext(ParentFolderIdContext)
 
     const db=getFirestore(app)
     useEffect(()=>{
@@ -28,7 +28,7 @@ function CreateFolderModal() {
     }
   return (
     <div>
-      <form method="dialog" className="modal-box p-9 items-center">
+      <form method="dialog" className="modal-box p-9 items-center bg-white">
         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
           ✕
         </button>
@@ -38,7 +38,7 @@ function CreateFolderModal() {
           <input
             type="text"
             placeholder="Folder Name"
-            className="p-2 border-[1px] outline-none
+            className="p-2 border-[1px] outline-none bg-slate-200
                 rounded-md"
                 onChange={(e)=>setFolderName(e.target.value)}
           />

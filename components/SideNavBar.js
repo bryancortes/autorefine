@@ -5,6 +5,7 @@ import CreateFolderModal from "./Folder/CreateFolderModal";
 import UploadFileModal from "./File/UploadFileModal";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import RefineFileModal from "./File/RefineFileModal";
 
 function SideNavBar() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -53,7 +54,7 @@ function SideNavBar() {
         className="flex gap-2 items-center text-[13px]
         bg-blue-400 p-2 text-white rounded-md px-3
         hover:scale-105 transition-all mt-1 w-full justify-center"
-        onClick={() => window.my_modal_3.showModal()}
+        onClick={() => window.create_folder.showModal()}
       >
         Create Folder
         <svg
@@ -74,7 +75,7 @@ function SideNavBar() {
         bg-green-500 p-2 text-white rounded-md px-3
         hover:scale-105 transition-all mt-1 w-full justify-center"
       // Reemplazar onClick() con la funcion para mandar API hacia Selenium
-      // onClick={() => window.my_modal_3.showModal()}
+        onClick={() => window.refine_file.showModal()}
       >
         Refine File
         <svg 
@@ -121,7 +122,10 @@ function SideNavBar() {
         ))}
       </div>
 
-      <dialog id="my_modal_3" className="modal">
+      <dialog id="refine_file" className="modal">
+        <RefineFileModal />
+      </dialog>
+      <dialog id="create_folder" className="modal">
         <CreateFolderModal />
       </dialog>
       <dialog id="upload_file" className="modal">
