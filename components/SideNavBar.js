@@ -6,6 +6,7 @@ import UploadFileModal from "./File/UploadFileModal";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import RefineFileModal from "./File/RefineFileModal";
+import DownloadModal from "./File/DownloadModal";  // Importa el nuevo modal
 
 function SideNavBar() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -132,7 +133,9 @@ function SideNavBar() {
         <UploadFileModal
           closeModal={() => window.upload_file.close()} />
       </dialog>
-
+      <dialog id="download_modal" className="modal">  {/* Nuevo modal */}
+        <DownloadModal />
+      </dialog>
     </div>
   );
 }
