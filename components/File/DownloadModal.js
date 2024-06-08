@@ -1,11 +1,40 @@
 import React from "react";
 
-function DownloadModal() {
-    const handleDownload = () => {
-        // Aquí puedes agregar la lógica para descargar el archivo Excel
-        console.log("Downloading Excel file...");
-    };
+function DownloadModal({ reportPath }) {
+    const handleDownload = async () => {
+        const fileUrl = 'http://3.22.233.90:5000/ttc-api/download_excel'; // Asegúrate de que esta es la URL correcta
 
+        try {
+            const response = await fetch(fileUrl, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const blob = await response.blob(); // Convertir la respuesta en un Blob
+
+            // Crear un URL para el Blob
+            const blobUrl = window.URL.createObjectURL(blob);
+
+            // Crear un enlace temporario y hacer clic en él para descargar el archivo
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = 'prueba.xlsx'; // Asignar nombre al archivo descargado
+            document.body.appendChild(link);
+            link.click();
+
+            // Limpiar y remover el enlace
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+
+            console.log("Excel file downloaded successfully.");
+        } catch (error) {
+            console.error('Error during the file download:', error);
+        }
+    };
+    
     return (
         <div>
             <form method="dialog" className="modal-box p-10 items-center bg-white">

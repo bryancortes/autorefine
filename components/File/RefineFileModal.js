@@ -25,7 +25,7 @@ function RefineFileModal() {
         setShowToastMsg('Refining...');
 
         try {
-          const response = await fetch('http://127.0.0.1:5000/ttc-api/upload', { //url api
+          const response = await fetch('http://3.22.233.90:5000/ttc-api/upload', { //url api
               method: 'POST',
               body: formData,
           });
