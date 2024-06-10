@@ -4,7 +4,7 @@ import { useSuggestions } from "@/context/SuggestionsContext";
 function DownloadModal() {
     const {suggestions} = useSuggestions();
     const handleDownload = async () => {
-        const fileUrl = 'http://127.0.0.1:5000/ttc-api/download_excel'; // Asegúrate de que esta es la URL correcta
+        const fileUrl = 'http://3.22.233.90:5000/ttc-api/download_excel'; // Asegúrate de que esta es la URL correcta
 
         try {
             const response = await fetch(fileUrl, {
