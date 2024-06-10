@@ -1,11 +1,12 @@
 import Image from "next/image";
 import React, { useContext, useState } from "react";
 import { ShowToastContext } from "../../context/ShowToastContext";
-
+import { useSuggestions } from "@/context/SuggestionsContext";
 function RefineFileModal() {
     const [fileName, setFileName] = useState(null);
     const [idTest, setIdTest] = useState('');
     const [url, setUrl] = useState('');
+    const { setSuggestions } = useSuggestions();
     const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
 
     const onCreate = async () => {
@@ -25,7 +26,7 @@ function RefineFileModal() {
         setShowToastMsg('Refining...');
 
         try {
-          const response = await fetch('http://3.22.233.90:5000/ttc-api/upload', { //url api
+          const response = await fetch('http://127.0.0.1:5000/ttc-api/upload', { //url api
               method: 'POST',
               body: formData,
           });
@@ -36,10 +37,12 @@ function RefineFileModal() {
   
           const result = await response.json();
           setShowToastMsg('Refinement complete. Check console for details.');
-          console.log(result);
+          console.log('Result: ', result);
+          console.log('Suggestions: ', result.suggestions);
+          setSuggestions(result.suggestions);
           // Cerrar el modal actual y abrir el nuevo modal
           window.refine_file.close();
-          window.download_modal.showModal();
+          window.download_modal.showModal(result.suggestions);
         } catch (error) {
             console.error('Error during the fetch operation:', error);
             setShowToastMsg('Error refining the file.');

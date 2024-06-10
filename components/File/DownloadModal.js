@@ -1,8 +1,10 @@
 import React from "react";
+import { useSuggestions } from "@/context/SuggestionsContext";
 
-function DownloadModal({ reportPath }) {
+function DownloadModal() {
+    const {suggestions} = useSuggestions();
     const handleDownload = async () => {
-        const fileUrl = 'http://3.22.233.90:5000/ttc-api/download_excel'; // Asegúrate de que esta es la URL correcta
+        const fileUrl = 'http://127.0.0.1:5000/ttc-api/download_excel'; // Asegúrate de que esta es la URL correcta
 
         try {
             const response = await fetch(fileUrl, {
@@ -34,6 +36,7 @@ function DownloadModal({ reportPath }) {
             console.error('Error during the file download:', error);
         }
     };
+    console.log("Sugerencias en DownloadModal:", suggestions);
     
     return (
         <div>
@@ -49,6 +52,17 @@ function DownloadModal({ reportPath }) {
                     >
                         Download Excel File
                     </button>
+                    {suggestions && Object.keys(suggestions).length > 0 && (
+                        <div className="w-full mt-4">
+                            <h3 className="text-lg font-semibold">Suggestions:</h3>
+                            {Object.entries(suggestions).map(([locator, {suggestion, score}], index) => (
+                                <div key={index} className="p-4 mt-2 bg-gray-100 rounded shadow-sm">
+                                    <p className="font-bold text-gray-700">Broken Locator: <span className="text-gray-600">{locator}</span></p>
+                                    <p className="text-gray-700">Suggestion: <span className="font-semibold text-blue-500">{suggestion}</span> ({score}% match)</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </form>
         </div>
