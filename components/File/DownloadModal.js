@@ -1,8 +1,11 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { useSuggestions } from "@/context/SuggestionsContext";
 
 function DownloadModal() {
-    const {suggestions} = useSuggestions();
+    const { suggestions } = useSuggestions();
+    const [responses, setResponses] = useState({});
+    
     const handleDownload = async () => {
         const fileUrl = 'http://3.22.233.90:5000/ttc-api/download_excel'; // Asegúrate de que esta es la URL correcta
 
@@ -36,8 +39,21 @@ function DownloadModal() {
             console.error('Error during the file download:', error);
         }
     };
-    console.log("Sugerencias en DownloadModal:", suggestions);
-    
+
+    const handleResponse = async (locator, action) => {
+        try {
+            const response = await fetch('http://3.22.233.90:5000/ttc-api/update_suggestion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ locator, action })
+            });
+            const data = await response.json();
+            setResponses(prev => ({ ...prev, [locator]: true })); 
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };    
+        
     return (
         <div>
             <form method="dialog" className="modal-box p-10 items-center bg-white">
@@ -53,16 +69,24 @@ function DownloadModal() {
                         Download Excel File
                     </button>
                     {suggestions && Object.keys(suggestions).length > 0 && (
-                        <div className="w-full mt-4">
-                            <h3 className="text-lg font-semibold">Suggestions:</h3>
-                            {Object.entries(suggestions).map(([locator, {suggestion, score}], index) => (
-                                <div key={index} className="p-4 mt-2 bg-gray-100 rounded shadow-sm">
-                                    <p className="font-bold text-gray-700">Broken Locator: <span className="text-gray-600">{locator}</span></p>
-                                    <p className="text-gray-700">Suggestion: <span className="font-semibold text-blue-500">{suggestion}</span> ({score}% match)</p>
+                    <div className="w-full mt-4">
+                        <h3 className="text-lg font-semibold">Suggestions:</h3>
+                        {Object.entries(suggestions).map(([locator, { suggestion, score }], index) => (
+                            <div key={index} className="p-4 mt-2 bg-gray-100 rounded shadow-sm">
+                                <p className="font-bold text-gray-700">Broken Locator: <span className="text-gray-600">{locator}</span></p>
+                                <p className="text-gray-700">Suggestion: <span className="font-semibold text-blue-500">{suggestion}</span> ({score}% match)</p>
+                                <div>
+                                    <button type="button" onClick={() => handleResponse(locator, 'accept')}
+                                        disabled={responses[locator]}
+                                        className={`mr-2 text-white rounded-md p-2 ${responses[locator] ? 'bg-gray-400' : 'bg-green-500'}`}>Accept</button>
+                                    <button type="button" onClick={() => handleResponse(locator, 'decline')}
+                                        disabled={responses[locator]}
+                                        className={`text-white rounded-md p-2 ${responses[locator] ? 'bg-gray-400' : 'bg-red-500'}`}>Decline</button>
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                            </div>
+                        ))}
+                    </div>
+                )}
                 </div>
             </form>
         </div>

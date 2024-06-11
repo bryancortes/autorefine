@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import menu from "../data/menu";
 import CreateFolderModal from "./Folder/CreateFolderModal";
 import UploadFileModal from "./File/UploadFileModal";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import RefineFileModal from "./File/RefineFileModal";
@@ -10,8 +11,21 @@ import DownloadModal from "./File/DownloadModal";  // Importa el nuevo modal
 
 function SideNavBar() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [currentVersion, setCurrentVersion] = useState(null);
   const router = useRouter();
   const { data: session } = useSession();
+
+  useEffect(() => {
+    fetch('http://3.22.233.90:5000/ttc-api/versions/current')
+      .then(response => response.json())
+      .then(data => {
+        if (data.version_actual) {
+          setCurrentVersion(data.version_actual);
+        }
+      })
+      .catch(error => console.error('Error fetching current version:', error));
+  }, []);
+
   const onMenuClick = (item, index) => {
     setActiveIndex(index);
     router.push('/')
@@ -29,6 +43,12 @@ function SideNavBar() {
           width={150} height={60}
           onClick={() => router.push('/')} />
       </div>
+      {currentVersion && (
+        <div className="mt-4 p-2 bg-blue-100 rounded text-xs text-gray-600">
+          <p>Version: {currentVersion.numero_version}</p>
+          <p>GitHub: <a href={currentVersion.github_url} target="_blank" rel="noopener noreferrer" className="text-blue-800 underline">Repo</a></p>
+        </div>
+      )}
       <button
         onClick={() => window.upload_file.showModal()}
         className="flex gap-2 items-center text-[13px]
